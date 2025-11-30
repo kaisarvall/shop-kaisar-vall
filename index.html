@@ -1,0 +1,1431 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KAISAR VALL - SHOP</title>
+    <style>
+        @font-face {
+            font-family: 'ChunkFive';
+            src: url('https://fonts.cdnfonts.com/s/14618/ChunkFive-Regular.woff') format('woff');
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'ChunkFive', sans-serif;
+        }
+        
+        :root {
+            --primary-color: #409cff;
+            --primary-glow: rgba(64, 156, 255, 0.7);
+            --secondary-color: #b0b0b0;
+            --bg-color: #0a192f;
+            --card-bg: rgba(10, 25, 47, 0.8);
+            --text-color: #e6e6e6;
+            --accent-blue: #00a8ff;
+            --nav-bg: rgba(10, 25, 47, 0.9);
+            --particle-color: #409cff;
+        }
+        
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            overflow-x: hidden;
+            transition: all 0.5s ease;
+        }
+        
+        #particles-js {
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            top: 0;
+            left: 0;
+        }
+        
+        .hamburger-menu {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            cursor: pointer;
+        }
+        
+        .hamburger-icon {
+            width: 30px;
+            height: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        
+        .hamburger-line {
+            height: 4px;
+            width: 100%;
+            background-color: var(--secondary-color);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+        
+        .hamburger-menu.active .hamburger-line:nth-child(1) {
+            transform: rotate(45deg) translate(8px, 8px);
+        }
+        
+        .hamburger-menu.active .hamburger-line:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .hamburger-menu.active .hamburger-line:nth-child(3) {
+            transform: rotate(-45deg) translate(8px, -8px);
+        }
+        
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 300px;
+            height: 100%;
+            background: var(--nav-bg);
+            z-index: 999;
+            transition: left 0.3s ease;
+            padding: 60px 20px 20px;
+            overflow-y: auto;
+            box-shadow: 5px 0 15px rgba(0, 0, 0, 0.5);
+        }
+        
+        .sidebar.active {
+            left: 0;
+        }
+        
+        .sidebar-item {
+            padding: 15px;
+            margin-bottom: 10px;
+            background: rgba(64, 156, 255, 0.1);
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: var(--secondary-color);
+            text-align: center;
+        }
+        
+        .sidebar-item:hover {
+            background: rgba(64, 156, 255, 0.3);
+            color: #ffffff;
+            transform: translateX(5px);
+        }
+        
+        header {
+            text-align: center;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        h1 {
+            font-size: 2.5rem;
+            color: var(--secondary-color);
+            text-shadow: 0 0 10px rgba(176, 176, 176, 0.7);
+            margin-bottom: 20px;
+            letter-spacing: 2px;
+        }
+        
+        .video-container {
+            display: flex;
+            justify-content: center;
+            margin: 30px 0;
+        }
+        
+        .video-wrapper {
+            position: relative;
+            width: 60%;
+            max-width: 700px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 0 0 4px var(--accent-blue), 0 0 20px var(--primary-glow);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .video-wrapper:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 4px var(--accent-blue), 0 0 30px var(--primary-glow);
+        }
+        
+        video {
+            width: 100%;
+            display: block;
+        }
+        
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .product-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+            overflow: hidden;
+            position: relative;
+        }
+        .product-card::before {
+    content: '';
+    position: absolute;
+    top: -2px;
+    left: -2px;
+    right: -2px;
+    bottom: -2px;
+    background: linear-gradient(45deg, var(--primary-color), transparent, var(--primary-color));
+    z-index: -1;
+    border-radius: 12px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.product-card:hover::before {
+    opacity: 1;
+}
+
+.product-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 20px var(--primary-glow);
+}
+
+.product-title {
+    font-size: 1.2rem;
+    color: var(--secondary-color);
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.click-info {
+    font-size: 0.9rem;
+    color: var(--secondary-color);
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.product-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s ease;
+    color: var(--secondary-color);
+}
+
+.product-card.active .product-details {
+    max-height: 500px;
+}
+
+.price-list {
+    margin: 15px 0;
+    padding-left: 20px;
+}
+
+.price-list li {
+    margin-bottom: 8px;
+    position: relative;
+    padding-left: 10px;
+}
+
+.price-list li::before {
+    content: "•";
+    color: var(--primary-color);
+    position: absolute;
+    left: 0;
+}
+
+.order-btn {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-top: 15px;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.order-btn::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.5s ease;
+}
+
+.order-btn:hover::after {
+    left: 100%;
+}
+
+.order-btn:hover {
+    background: var(--primary-color);
+    filter: brightness(1.2);
+    transform: translateY(-2px);
+}
+
+.copyright {
+    text-align: center;
+    padding: 20px;
+    color: #ffffff;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+    margin-bottom: 80px;
+}
+
+/* Development Box */
+.development-box {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 30px;
+    border-radius: 15px;
+    margin: 30px auto;
+    max-width: 600px;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 0 20px var(--primary-glow);
+    text-align: center;
+}
+
+/* Navigation Bar Styles */
+.bottom-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background: var(--nav-bg);
+    display: flex;
+    justify-content: space-around;
+    padding: 12px 0;
+    border-top: 1px solid rgba(64, 156, 255, 0.3);
+    z-index: 998;
+}
+
+.nav-btn {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: none;
+    border: none;
+    color: var(--secondary-color);
+    cursor: pointer;
+    padding: 8px 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    font-size: 0.8rem;
+}
+
+.nav-btn i {
+    font-size: 1.2rem;
+    margin-bottom: 4px;
+}
+
+.nav-btn.active {
+    color: var(--primary-color);
+    background: rgba(64, 156, 255, 0.1);
+    transform: translateY(-2px);
+}
+
+.nav-btn:hover {
+    color: var(--primary-color);
+    background: rgba(64, 156, 255, 0.1);
+}
+
+.page {
+    display: none;
+    padding: 40px 20px;
+    text-align: center;
+    min-height: calc(100vh - 160px);
+}
+
+.page.active {
+    display: block;
+    animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.page h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+.video-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    gap: 15px;
+    max-width: 600px;
+    margin: 30px auto;
+}
+
+.video-grid video {
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px var(--primary-glow);
+    transition: transform 0.3s ease;
+}
+
+.video-grid video:hover {
+    transform: scale(1.03);
+}
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    z-index: 1001;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    animation: fadeIn 0.3s ease;
+}
+
+.overlay.active {
+    display: flex;
+}
+
+.popup {
+    background: var(--nav-bg);
+    border-radius: 10px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    max-height: 80vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: 0 0 30px var(--primary-glow);
+    border: 2px solid var(--primary-color);
+    animation: popupIn 0.3s ease;
+}
+
+@keyframes popupIn {
+    from { transform: scale(0.8); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #ff4d4d;
+    transform: rotate(90deg);
+}
+
+.popup h3 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: var(--secondary-color);
+}
+
+.popup-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+.popup-btn {
+    padding: 12px;
+    background: rgba(64, 156, 255, 0.2);
+    border: 1px solid var(--primary-color);
+    border-radius: 5px;
+    color: var(--secondary-color);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+}
+
+.popup-btn:hover {
+    background: rgba(64, 156, 255, 0.4);
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+        .song-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        
+        .song-btn {
+            padding: 8px 5px;
+            background: rgba(64, 156, 255, 0.1);
+            border: 1px solid var(--primary-color);
+            border-radius: 5px;
+            color: var(--secondary-color);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+        
+        .song-btn:hover {
+            background: rgba(64, 156, 255, 0.3);
+            color: #ffffff;
+        }
+        
+        .theme-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-top: 20px;
+        }
+        
+        .theme-btn {
+            padding: 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            text-align: center;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+        
+        .theme-btn:hover {
+            transform: scale(1.05);
+        }
+        
+        .theme-red {
+            background: #ff4d4d;
+            color: white;
+        }
+        
+        .theme-blue {
+            background: var(--primary-color);
+            color: white;
+        }
+        
+        .theme-green {
+            background: #4dff4d;
+            color: #333;
+        }
+        
+        .theme-yellow {
+            background: #ffff4d;
+            color: #333;
+        }
+        
+        .payment-info {
+            text-align: left;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+        
+        .payment-info div {
+            margin-bottom: 10px;
+            padding-left: 10px;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .qris-image {
+            width: 100%;
+            max-width: 300px;
+            margin: 20px auto;
+            display: block;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        
+        .notification {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            padding: 15px 25px;
+            background: var(--nav-bg);
+            border: 2px solid var(--primary-color);
+            border-radius: 5px;
+            color: var(--secondary-color);
+            box-shadow: 0 0 15px var(--primary-glow);
+            z-index: 1002;
+            display: none;
+        }
+        
+        .notification.active {
+            display: block;
+            animation: fadeInOut 3s ease;
+        }
+        
+        @keyframes fadeInOut {
+            0% { opacity: 0; transform: translateY(20px); }
+            20% { opacity: 1; transform: translateY(0); }
+            80% { opacity: 1; transform: translateY(0); }
+            100% { opacity: 0; transform: translateY(20px); }
+        }
+        
+        @media (max-width: 768px) {
+            .products-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .video-wrapper {
+                width: 90%;
+            }
+            
+            .video-grid {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+            
+            .song-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .nav-btn {
+                font-size: 0.7rem;
+                padding: 6px 8px;
+            }
+            
+            .nav-btn i {
+                font-size: 1rem;
+            }
+        }
+        
+        .floating-particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+        }
+        
+        .floating-particle {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            opacity: 0.5;
+            animation: float 15s infinite linear;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translateY(0) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 0.5;
+            }
+            90% {
+                opacity: 0.5;
+            }
+            100% {
+                transform: translateY(-100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="particles-js"></div>
+    
+    <div class="floating-particles" id="floating-particles"></div>
+    
+    <div class="hamburger-menu">
+        <div class="hamburger-icon">
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+            <div class="hamburger-line"></div>
+        </div>
+    </div>
+    
+    <div class="sidebar">
+        <div class="sidebar-item" id="contact-btn">HUBUNGI VALL</div>
+        <div class="sidebar-item" id="social-btn">SOSIAL MEDIA</div>
+        <div class="sidebar-item" id="music-btn">GANTI LAGU</div>
+        <div class="sidebar-item" id="theme-btn">GANTI TEMA</div>
+    </div>
+    
+    <!-- Halaman Shop (Default) -->
+    <div class="page active" id="shop-page">
+        <header>
+            <h1>KAISAR VALL - SHOP</h1>
+        </header>
+        
+        <div class="video-container">
+            <div class="video-wrapper">
+                <video autoplay loop muted playsinline>
+                    <source src="https://files.catbox.moe/d9dkle.mp4" type="video/mp4">
+                    Browser Anda tidak mendukung tag video.
+                </video>
+            </div>
+        </div>
+        
+        <div class="products-grid" id="products-container">
+        </div>
+        
+        <div class="copyright">
+            <p>© KAISAR VALL - 2025</p>
+        </div>
+    </div>
+    
+    <!-- Halaman Tools -->
+    <div class="page" id="tools-page">
+        <header>
+            <h1>TOOLS</h1>
+        </header>
+        <div class="development-box">
+            <p>SEDANG DALAM TAHAP PENGEMBANGAN 👀</p>
+        </div>
+    </div>
+    
+    <!-- Halaman My Bini -->
+    <div class="page" id="bini-page">
+        <header>
+            <h1>My Liu Lange ❤️</h1>
+        </header>
+        <div class="video-grid">
+            <video autoplay loop muted playsinline>
+                <source src="https://files.catbox.moe/0mhm70.mp4" type="video/mp4">
+            </video>
+            <video autoplay loop muted playsinline>
+                <source src="https://files.catbox.moe/aptkyz.mp4" type="video/mp4">
+            </video>
+            <video autoplay loop muted playsinline>
+                <source src="https://files.catbox.moe/twtfpp.mp4" type="video/mp4">
+            </video>
+            <video autoplay loop muted playsinline>
+                <source src="https://files.catbox.moe/jnsjjs.mp4" type="video/mp4">
+            </video>
+        </div>
+    </div>
+    
+    <!-- Halaman AI -->
+    <div class="page" id="ai-page">
+        <header>
+            <h1>KAISAR VALL - AI</h1>
+        </header>
+        <div class="development-box">
+            <p>SEDANG DALAM TAHAP PENGEMBANGAN 👀</p>
+        </div>
+    </div>
+    
+    <!-- Bottom Navigation Bar -->
+    <div class="bottom-nav">
+        <button class="nav-btn active" data-page="shop">
+            <i>🛒</i>
+            <span>SHOP</span>
+        </button>
+        <button class="nav-btn" data-page="tools">
+            <i>🛠️</i>
+            <span>TOOLS</span>
+        </button>
+        <button class="nav-btn" data-page="bini">
+            <i>😍</i>
+            <span>MY BINI</span>
+        </button>
+        <button class="nav-btn" data-page="ai">
+            <i>🤖</i>
+            <span>AI</span>
+        </button>
+    </div>
+    
+    <div class="overlay" id="overlay">
+    </div>
+    
+    <div class="notification" id="notification"></div>
+    
+    <audio id="bg-music" loop>
+        <source src="https://files.catbox.moe/dludp8.mp3" type="audio/mpeg">
+    </audio>
+    <script>
+    const products = [
+        {
+            title: "SCRIPT BUG TREDICT INVICTUS",
+            details: {
+                heading: "LIST HARGA TREDICT INVICTUS",
+                prices: [
+                    "IDR 60.000 FREE UP 3×",
+                    "IDR 100.000 FREE UP PERMANEN",
+                    "IDR 120.000 RESELLER SC"
+                ]
+            }
+        },
+        {
+            title: "SCRIPT BUG SCARRY DEATH",
+            details: {
+                heading: "LIST HARGA SCARRY DEATH",
+                prices: [
+                    "IDR 25.000 FREE UP"
+                ]
+            }
+        },
+        {
+            title: "SCRIPT + APK BUG OTAX",
+            details: {
+                heading: "LIST HARGA OTAX",
+                prices: [
+                    "IDR 40.000 FREE UP PERMANEN",
+                    "BELI SCRIPT OTAX AKAN MENDAPATKAN BONUS APK NYA"
+                ]
+            }
+        },
+        {
+            title: "PANEL PTERODACTYL",
+            details: {
+                heading: "LIST HARGA PANEL PTERODACTYL",
+                prices: [
+                    "IDR 5.000 PANEL UNLIMITED",
+                    "IDR 10.000 RESELLER PANEL",
+                    "IDR 15.000 ADMIN PANEL"
+                ]
+            }
+        },
+        {
+            title: "MURID BUG",
+            details: {
+                heading: "LIST HARGA MURID BUG",
+                prices: [
+                    "IDR 5.000 JASA BUG",
+                    "IDR 20.000 SEBULAN",
+                    "IDR 30.000 PERMANEN"
+                ]
+            }
+        },
+        {
+            title: "MURID BANNED",
+            details: {
+                heading: "LIST HARGA MURID BANNED",
+                prices: [
+                    "IDR 25.000 MURBAN",
+                    "IDR 50.000 JASA BAN"
+                ]
+            }
+        },
+        {
+            title: "MURID UNBANNED",
+            details: {
+                heading: "LIST HARGA MURUNBAN",
+                prices: [
+                    "IDR 25.000 PERMANEN",
+                    "IDR 35.000 JASA UNBAN",
+                    "IDR 50.000 JASA UNBAN"
+                ]
+            }
+        },
+        {
+            title: "SCRIPT CPANEL VIP",
+            details: {
+                heading: "LIST HARGA SC CPANEL VIP",
+                prices: [
+                    "IDR 15.000 ENC",
+                    "IDR 20.000 NO ENC",
+                    "IDR 30.000 FULL UP"
+                ]
+            }
+        },
+        {
+            title: "NOMOR KOSONG",
+            details: {
+                heading: "LIST HARGA NOKOS",
+                prices: [
+                    "IDR 6.500 NOKOS WA",
+                    "IDR 7.000 NOKOS TELE"
+                ]
+            }
+        },
+        {
+            title: "WA BADAK",
+            details: {
+                heading: "LIST HARGA WA BADAK",
+                prices: [
+                    "IDR 50.000 FILE BADAK",
+                    "IDR 70.000 NOMOR BADAK"
+                ]
+            }
+        },
+        {
+            title: "SEWA BOT",
+            details: {
+                heading: "LIST HARGA SEWA BOT",
+                prices: [
+                    "IDR 10.000 BOT JAGA GRUP"
+                ]
+            }
+        },
+        {
+            title: "JOIN PARTNER VALL",
+            details: {
+                heading: "LIST HARGA JOIN PT",
+                prices: ["IDR 30.000"],
+                benefits: [
+                    "GET PROMOSI 2x24", "GET BUYER", "GET ADMIN PANEL", "GET MURBAN", "GET MURUNBAN",
+                    "GET TUTOR SADAP KAMERA", "GET TUTOR TRACK LOKASI", "GET BIMBINGAN", "GET SC SCARRY DEATH",
+                    "GET SC CPANEL VIP", "GET SC GACHA", "GET BANYAK BASE", "GET FUNCTION", "GET ALL PROJECT VIP",
+                    "GET SC GACHA", "GET SC JAGA GRUP", "GET SC OBFUSCATOR", "GET KASIH SAYANG", "GET MURID SUNTIK",
+                    "GET MURID LOGO", "GET ALL HTML", "GER APK PREMIUM", "GET MURID UP DABIS", "GET MURID UP PAYMENT",
+                    "GET MURID RANSOMWARE", "GET SC BUG MAJESTY", "GET SC BUG APOPHIS", "GET SC BUG NEZUKO",
+                    "GET SC JASHARE", "GET SC PUSHKONTAK", "GET SC JPM", "GET COBAIN PROJECT GW PALING PERTAMA",
+                    "PASTI KEURUNG", "GET CIUM", "DAIN LAIN LAIN MASIH BANYAK GASS JOIN!"
+                ]
+            }
+        }
+    ];
+
+    const songs = [
+        { name: "LAGU 1", url: "https://files.catbox.moe/j3fcnd.mp3" },
+        { name: "LAGU 2", url: "https://files.catbox.moe/kpkgj3.mp3" },
+        { name: "LAGU 3", url: "https://files.catbox.moe/dludp8.mp3" },
+        { name: "LAGU 4", url: "https://files.catbox.moe/8twv9g.mp3" },
+        { name: "LAGU 5", url: "https://files.catbox.moe/usb8yr.mp3" },
+        { name: "LAGU 6", url: "https://files.catbox.moe/6fyzx4.mp3" },
+        { name: "LAGU 7", url: "https://files.catbox.moe/shqvfu.mp3" },
+        { name: "LAGU 8", url: "https://files.catbox.moe/f9o3kb.mp3" },
+        { name: "LAGU 9", url: "https://files.catbox.moe/gmhbb6.mp3" },
+        { name: "LAGU 10", url: "https://files.catbox.moe/2fw8lh.mp3" },
+        { name: "LAGU 11", url: "https://files.catbox.moe/jwjsb9.mp3" },
+        { name: "LAGU 12", url: "https://files.catbox.moe/hg8lw6.mp3" },
+        { name: "LAGU 13", url: "https://files.catbox.moe/3jfugn.mp3" },
+        { name: "LAGU 14", url: "https://files.catbox.moe/3jfugn.mp3" },
+        { name: "LAGU 15", url: "https://files.catbox.moe/lm61p4.mp3" },
+        { name: "LAGU 16", url: "https://files.catbox.moe/lm61p4.mp3" },
+        { name: "LAGU 17", url: "https://files.catbox.moe/fucn9b.mp3" },
+        { name: "LAGU 18", url: "https://files.catbox.moe/htgdg4.m4a" },
+        { name: "LAGU 19", url: "https://files.catbox.moe/jryxjt.mp3" },
+        { name: "LAGU 20", url: "https://files.catbox.moe/rrtrez.mp3" },
+        { name: "LAGU 21", url: "https://files.catbox.moe/fqkuq2.mp3" },
+        { name: "LAGU 22", url: "https://files.catbox.moe/h9ogqs.mp3" },
+        { name: "LAGU 23", url: "https://files.catbox.moe/6cm7zc.mp3" },
+        { name: "LAGU 24", url: "https://files.catbox.moe/wpkfyn.mp3" },
+        { name: "LAGU 25", url: "" }
+    ];
+
+    let currentTheme = 'blue';
+    const audioElement = document.getElementById('bg-music');
+    
+    function createProductCard(product, index) {
+        const card = document.createElement('div');
+        card.className = 'product-card';
+        card.dataset.index = index;
+        
+        const title = document.createElement('div');
+        title.className = 'product-title';
+        title.textContent = product.title;
+        
+        const clickInfo = document.createElement('div');
+        clickInfo.className = 'click-info';
+        clickInfo.textContent = 'KLIK DISINI UNTUK MELIHAT HARGA' + (product.title.includes('PARTNER') ? ' DAN BENEFIT' : '');
+        
+        const details = document.createElement('div');
+        details.className = 'product-details';
+        
+        const heading = document.createElement('h3');
+        heading.textContent = product.details.heading;
+        
+        const priceList = document.createElement('ul');
+        priceList.className = 'price-list';
+        
+        product.details.prices.forEach(price => {
+            const li = document.createElement('li');
+            li.textContent = price;
+            priceList.appendChild(li);
+        });
+        
+        if (product.details.benefits) {
+            const benefitsHeading = document.createElement('h4');
+            benefitsHeading.textContent = 'BENEFIT JOIN PT';
+            benefitsHeading.style.marginTop = '15px';
+            
+            const benefitsList = document.createElement('ul');
+            benefitsList.className = 'price-list';
+            
+            product.details.benefits.forEach(benefit => {
+                const li = document.createElement('li');
+                li.textContent = benefit;
+                benefitsList.appendChild(li);
+            });
+            
+            details.appendChild(benefitsHeading);
+            details.appendChild(benefitsList);
+        }
+        
+        const orderBtn = document.createElement('button');
+        orderBtn.className = 'order-btn';
+        orderBtn.textContent = 'ORDER';
+        
+        details.appendChild(heading);
+        details.appendChild(priceList);
+        details.appendChild(orderBtn);
+        
+        card.appendChild(title);
+        card.appendChild(clickInfo);
+        card.appendChild(details);
+        
+        return card;
+    }
+    
+    function createFloatingParticles() {
+        const container = document.getElementById('floating-particles');
+        const particleCount = 30;
+        
+        for (let i = 0; i < particleCount; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'floating-particle';
+            
+            const left = Math.random() * 100;
+            const delay = Math.random() * 15;
+            const duration = 15 + Math.random() * 10;
+            
+            particle.style.left = `${left}%`;
+            particle.style.animationDelay = `${delay}s`;
+            particle.style.animationDuration = `${duration}s`;
+            
+            container.appendChild(particle);
+        }
+    }
+    
+    function createOrderPopup() {
+        return `
+            <div class="popup">
+                <span class="close-btn">&times;</span>
+                <h3>PEMBAYARAN</h3>
+                <div class="payment-info">
+                    <div>DANA : 085194732962</div>
+                    <div>ATAS NAMA : VALL</div>
+                    <div>GOPAY : 085194732962</div>
+                    <div>ATAS NAMA : VALL</div>
+                </div>
+                <p style="text-align: center; margin: 15px 0;">SILAHKAN ZOOM FOTO QRIS DIBAWAH</p>
+                <img src="https://files.catbox.moe/rcsark.jpg" alt="QRIS" class="qris-image">
+                <p style="text-align: center; margin-top: 15px;">SETELAH TRANSFER SILAHKAN KIRIM BUKTI TRANSFER KEPADA VALL 📷</p>
+            </div>
+        `;
+    }
+    
+    function createContactPopup() {
+        return `
+            <div class="popup">
+                <span class="close-btn">&times;</span>
+                <h3>HUBUNGI VALL</h3>
+                <div class="popup-buttons">
+                    <div class="popup-btn" id="whatsapp-btn">WHATSAPP</div>
+                    <div class="popup-btn" id="telegram-btn">TELEGRAM</div>
+                </div>
+                <div id="telegram-options" style="display: none; margin-top: 15px;">
+                    <div class="popup-btn" id="telegram1-btn">TELEGRAM 1</div>
+                    <div class="popup-btn" id="telegram2-btn">TELEGRAM 2</div>
+                    <div class="popup-btn" id="telegram3-btn">TELEGRAM 3</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function createSocialPopup() {
+        return `
+            <div class="popup">
+                <span class="close-btn">&times;</span>
+                <h3>SOSIAL MEDIA</h3>
+                <div class="popup-buttons">
+                    <div class="popup-btn" id="youtube-btn">YOUTUBE</div>
+                    <div class="popup-btn" id="tiktok-btn">TIKTOK</div>
+                    <div class="popup-btn" id="instagram-btn">INSTAGRAM</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function createMusicPopup() {
+        let songButtons = '';
+        songs.forEach((song, index) => {
+            songButtons += `<div class="song-btn" data-url="${song.url}">${song.name}</div>`;
+        });
+        
+        return `
+            <div class="popup">
+                <span class="close-btn">&times;</span>
+                <h3>GANTI LAGU</h3>
+                <div class="song-grid">
+                    ${songButtons}
+                </div>
+            </div>
+        `;
+    }
+    
+    function createThemePopup() {
+        return `
+            <div class="popup">
+                <span class="close-btn">&times;</span>
+                <h3>GANTI TEMA</h3>
+                <div class="theme-buttons">
+                    <div class="theme-btn theme-red" data-theme="red">MERAH</div>
+                    <div class="theme-btn theme-blue" data-theme="blue">BIRU</div>
+                    <div class="theme-btn theme-green" data-theme="green">HIJAU</div>
+                    <div class="theme-btn theme-yellow" data-theme="yellow">KUNING</div>
+                </div>
+            </div>
+        `;
+    }
+    
+    function showNotification(message) {
+        const notification = document.getElementById('notification');
+        notification.textContent = message;
+        notification.classList.add('active');
+        
+        setTimeout(() => {
+            notification.classList.remove('active');
+        }, 3000);
+    }
+            function changeTheme(theme) {
+            const root = document.documentElement;
+            
+            // Reset semua variabel CSS ke default
+            root.style.setProperty('--primary-color', '#409cff');
+            root.style.setProperty('--primary-glow', 'rgba(64, 156, 255, 0.7)');
+            root.style.setProperty('--accent-blue', '#00a8ff');
+            root.style.setProperty('--bg-color', '#0a192f');
+            root.style.setProperty('--nav-bg', 'rgba(10, 25, 47, 0.9)');
+            root.style.setProperty('--particle-color', '#409cff');
+            
+            // Terapkan tema yang dipilih
+            switch(theme) {
+                case 'red':
+                    root.style.setProperty('--primary-color', '#ff4d4d');
+                    root.style.setProperty('--primary-glow', 'rgba(255, 77, 77, 0.7)');
+                    root.style.setProperty('--accent-blue', '#ff4d4d');
+                    root.style.setProperty('--bg-color', '#2f0a0a');
+                    root.style.setProperty('--nav-bg', 'rgba(47, 10, 10, 0.9)');
+                    root.style.setProperty('--particle-color', '#ff4d4d');
+                    break;
+                case 'green':
+                    root.style.setProperty('--primary-color', '#4dff4d');
+                    root.style.setProperty('--primary-glow', 'rgba(77, 255, 77, 0.7)');
+                    root.style.setProperty('--accent-blue', '#4dff4d');
+                    root.style.setProperty('--bg-color', '#0a2f0a');
+                    root.style.setProperty('--nav-bg', 'rgba(10, 47, 10, 0.9)');
+                    root.style.setProperty('--particle-color', '#4dff4d');
+                    break;
+                case 'yellow':
+                    root.style.setProperty('--primary-color', '#ffff4d');
+                    root.style.setProperty('--primary-glow', 'rgba(255, 255, 77, 0.7)');
+                    root.style.setProperty('--accent-blue', '#ffff4d');
+                    root.style.setProperty('--bg-color', '#2f2f0a');
+                    root.style.setProperty('--nav-bg', 'rgba(47, 47, 10, 0.9)');
+                    root.style.setProperty('--particle-color', '#ffff4d');
+                    break;
+            }
+            
+            // Update partikel dengan warna baru
+            updateParticlesColor();
+            
+            currentTheme = theme;
+            showNotification('BERHASIL MENGGANTI WARNA ✅');
+        }
+        
+        function updateParticlesColor() {
+            // Hapus partikel lama
+            if (window.pJSDom && window.pJSDom.length > 0) {
+                window.pJSDom[0].pJS.fn.vendors.destroypJS();
+                window.pJSDom = [];
+            }
+            
+            // Inisialisasi ulang partikel dengan warna baru
+            initParticles();
+        }
+        
+        function initParticles() {
+            const root = document.documentElement;
+            const particleColor = getComputedStyle(root).getPropertyValue('--particle-color').trim();
+            
+            particlesJS('particles-js', {
+                particles: {
+                    number: {
+                        value: 80,
+                        density: {
+                            enable: true,
+                            value_area: 800
+                        }
+                    },
+                    color: {
+                        value: particleColor
+                    },
+                    shape: {
+                        type: "circle",
+                        stroke: {
+                            width: 0,
+                            color: "#000000"
+                        },
+                        polygon: {
+                            nb_sides: 5
+                        }
+                    },
+                    opacity: {
+                        value: 0.5,
+                        random: false,
+                        anim: {
+                            enable: false,
+                            speed: 1,
+                            opacity_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    size: {
+                        value: 3,
+                        random: true,
+                        anim: {
+                            enable: false,
+                            speed: 40,
+                            size_min: 0.1,
+                            sync: false
+                        }
+                    },
+                    line_linked: {
+                        enable: true,
+                        distance: 150,
+                        color: particleColor,
+                        opacity: 0.4,
+                        width: 1
+                    },
+                    move: {
+                        enable: true,
+                        speed: 2,
+                        direction: "none",
+                        random: false,
+                        straight: false,
+                        out_mode: "out",
+                        bounce: false,
+                        attract: {
+                            enable: false,
+                            rotateX: 600,
+                            rotateY: 1200
+                        }
+                    }
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: {
+                            enable: true,
+                            mode: "repulse"
+                        },
+                        onclick: {
+                            enable: true,
+                            mode: "push"
+                        },
+                        resize: true
+                    },
+                    modes: {
+                        grab: {
+                            distance: 400,
+                            line_linked: {
+                                opacity: 1
+                            }
+                        },
+                        bubble: {
+                            distance: 400,
+                            size: 40,
+                            duration: 2,
+                            opacity: 8,
+                            speed: 3
+                        },
+                        repulse: {
+                            distance: 200,
+                            duration: 0.4
+                        },
+                        push: {
+                            particles_nb: 4
+                        },
+                        remove: {
+                            particles_nb: 2
+                        }
+                    }
+                },
+                retina_detect: true
+            });
+        }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const productsContainer = document.getElementById('products-container');
+            const hamburgerMenu = document.querySelector('.hamburger-menu');
+            const sidebar = document.querySelector('.sidebar');
+            const overlay = document.getElementById('overlay');
+            const navBtns = document.querySelectorAll('.nav-btn');
+            const pages = document.querySelectorAll('.page');
+            
+            // Generate produk cards
+            products.forEach((product, index) => {
+                const card = createProductCard(product, index);
+                productsContainer.appendChild(card);
+            });
+            
+            createFloatingParticles();
+            initParticles();
+            
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.addEventListener('click', function(e) {
+                    if (!e.target.classList.contains('order-btn')) {
+                        this.classList.toggle('active');
+                    }
+                });
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('order-btn')) {
+                    overlay.innerHTML = createOrderPopup();
+                    overlay.classList.add('active');
+                }
+            });
+            
+            hamburgerMenu.addEventListener('click', function() {
+                this.classList.toggle('active');
+                sidebar.classList.toggle('active');
+            });
+            
+            document.getElementById('contact-btn').addEventListener('click', function() {
+                overlay.innerHTML = createContactPopup();
+                overlay.classList.add('active');
+                sidebar.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+            });
+            
+            document.getElementById('social-btn').addEventListener('click', function() {
+                overlay.innerHTML = createSocialPopup();
+                overlay.classList.add('active');
+                sidebar.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+            });
+            
+            document.getElementById('music-btn').addEventListener('click', function() {
+                overlay.innerHTML = createMusicPopup();
+                overlay.classList.add('active');
+                sidebar.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+            });
+            
+            document.getElementById('theme-btn').addEventListener('click', function() {
+                overlay.innerHTML = createThemePopup();
+                overlay.classList.add('active');
+                sidebar.classList.remove('active');
+                hamburgerMenu.classList.remove('active');
+            });
+            
+            overlay.addEventListener('click', function(e) {
+                if (e.target.classList.contains('overlay') || e.target.classList.contains('close-btn')) {
+                    this.classList.remove('active');
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'whatsapp-btn') {
+                    window.open('https://wa.me/6285194732962', '_blank');
+                } else if (e.target.id === 'telegram-btn') {
+                    document.getElementById('telegram-options').style.display = 'block';
+                } else if (e.target.id === 'telegram1-btn') {
+                    window.open('https://t.me/kaisarvall', '_blank');
+                } else if (e.target.id === 'telegram2-btn') {
+                    window.open('https://t.me/mivaldsaturn', '_blank');
+                } else if (e.target.id === 'telegram3-btn') {
+                    window.open('https://t.me/mivaldsaturnn', '_blank');
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.id === 'youtube-btn') {
+                    window.open('https://www.youtube.com/@mivaldsaturn', '_blank');
+                } else if (e.target.id === 'tiktok-btn') {
+                    window.open('https://www.tiktok.com/@vallkagenou_?_r=1&_t=ZS-91n74AZKSz2', '_blank');
+                } else if (e.target.id === 'instagram-btn') {
+                    window.open('https://www.instagram.com/zennxime?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==', '_blank');
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('song-btn')) {
+                    const songUrl = e.target.dataset.url;
+                    if (songUrl) {
+                        audioElement.src = songUrl;
+                        audioElement.volume = 0.8;
+                        audioElement.play().catch(e => {
+                            console.log('Autoplay prevented:', e);
+                        });
+                        showNotification('BERHASIL MENGGANTI LAGU ✅');
+                        overlay.classList.remove('active');
+                    }
+                }
+            });
+            
+            document.addEventListener('click', function(e) {
+                if (e.target.classList.contains('theme-btn')) {
+                    const theme = e.target.dataset.theme;
+                    changeTheme(theme);
+                    overlay.classList.remove('active');
+                }
+            });
+            
+            navBtns.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    const pageId = this.dataset.page + '-page';
+                    
+                    // Remove active class from all buttons and pages
+                    navBtns.forEach(b => b.classList.remove('active'));
+                    pages.forEach(page => page.classList.remove('active'));
+                    
+                    // Add active class to clicked button and corresponding page
+                    this.classList.add('active');
+                    document.getElementById(pageId).classList.add('active');
+                    
+                    // Scroll to top when changing pages
+                    window.scrollTo(0, 0);
+                });
+            });
+            
+            // Auto play music immediately with increased volume
+            audioElement.volume = 0.8;
+            setTimeout(() => {
+                audioElement.play().catch(e => {
+                    console.log('Initial autoplay prevented:', e);
+                    // Fallback: play on user interaction
+                    const playOnInteraction = () => {
+                        audioElement.play();
+                        document.removeEventListener('click', playOnInteraction);
+                    };
+                    document.addEventListener('click', playOnInteraction);
+                });
+            }, 100); // Start playing after 100ms (0.1 second)
+            
+            // Video autoplay workaround
+            document.addEventListener('click', function initVideos() {
+                document.querySelectorAll('video').forEach(video => {
+                    video.play().catch(e => {
+                        console.log('Video autoplay prevented:', e);
+                    });
+                });
+                document.removeEventListener('click', initVideos);
+            });
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+</body>
+</html>
